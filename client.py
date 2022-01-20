@@ -4,6 +4,7 @@ from azure.mgmt.resource import SubscriptionClient
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.network import NetworkManagementClient
+from azure.mgmt.monitor import MonitorManagementClient
 from conf import AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET, AZURE_SUBSCRIPTION_ID
 from az.cli import az
 import adal
@@ -20,7 +21,7 @@ class ClientLocator:
         self._compute_client = None
         self._access_token = None
         self._network_management_client = None
-
+        self._monitor_client = None
 
     def subscription_client(self):
         if not self._subscription_client:
@@ -46,6 +47,13 @@ class ClientLocator:
         if not self._network_management_client:
             self._network_management_client = NetworkManagementClient(self._credentials, Az)
         return self._network_management_client
+
+    def monitor_client(self):
+        if not self._monitor_client:
+            self._monitor_client = MonitorManagementClient(self._credentials, self.subscription_id())
+
+        return self._monitor_client
+
 
     def get_user_access_token(self):
         #print(f"login -u {conf.USER_NAME} -p {conf.USER_PASS}")

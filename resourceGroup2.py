@@ -53,7 +53,6 @@ class ResourceGroup:
         for item in self._resource_client.resource_groups.list():
             self.print_item(item)
 
-
     def delete_resource_group(self, group_name):
         print("Delete Resource Group")
         if group_name in self._resource_client.resource_groups.list():
