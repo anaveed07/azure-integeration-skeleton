@@ -4,7 +4,6 @@ from client import AzureClient
 
 class VirtualMachine:
     def __init__(self):
-
         self._compute_client = AzureClient().compute_client()
 
 
