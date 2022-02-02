@@ -1,11 +1,47 @@
 from client import AzureClient
-
-
+from resourceGroup2 import ResourceGroup
+from createNIC import NetworkCard
 
 class VirtualMachine:
     def __init__(self):
         self._compute_client = AzureClient().compute_client()
 
+    def create_vm (self):
+        VM_NAME = "PythonAzureVM"
+        Username = "UserAdmin"
+        PASSWORD = "P@ssw0rd2000"
+        rg_name = ResourceGroup().create_resource_group()
+        print(f"Prosionnement de la VM {VM_NAME}; cette operation peut prendre quelques minutes !")
+        # sizing & Version
+        poller = self._compute_client.virtual_machines.begin_create_or_update(rg_name,
+                                                                              VM_NAME,
+                                                                        {
+                                                                            "location": 'westus',
+                                                                            "storage_profile": {
+                                                                                "image_reference": {
+                                                                                    "publisher": 'Canonical',
+                                                                                    "offer": "UbuntuServer",
+                                                                                    "sku": "16.04.0-LTS",
+                                                                                    "version": "latest"
+                                                                                }
+                                                                            },
+                                                                            "hardware_profile": {
+                                                                                "vm_size": "Standard_B1s"
+                                                                            },
+                                                                            "os_profile": {
+                                                                                "computer_name": VM_NAME,
+                                                                                "admin_username": Username,
+                                                                                "admin_password": PASSWORD
+                                                                            },
+                                                                            "network_profile": {
+                                                                                "network_interfaces": [{
+                                                                                    "id": NetworkCard().create_nic(rg_name).id,
+                                                                                }]
+                                                                            }
+                                                                        })
+        vm_result = poller.result()
+
+        print(f" Machine virtual provision {vm_result.name}")
 
     def stop(self, vm, auth_data):
         return self.vm_action(vm, 'stop')

@@ -3,7 +3,7 @@ from msrestazure.azure_exceptions import CloudError
 
 
 class DefaultSettings():
-    resource_group = 'aztk'
+    resource_group = 'PythonTestRG'
     storage_account = 'aztkstorage'
     batch_account = 'aztkbatch'
     virtual_network_name = "aztkvnet"
@@ -86,4 +86,4 @@ class ResourceGroup:
         else:
             return value
 
-ResourceGroup().create_resource_group(resource_group='ahsan-test')
+#ResourceGroup().create_resource_group(resource_group='ahsan-test')
