@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "----Run vncserver"
 USER=$USER
 HOME=$HOME
